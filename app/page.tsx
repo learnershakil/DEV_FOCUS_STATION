@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { MainTimer } from '@/components/MainTimer';
-import { TodoList, TodoItem } from '@/components/TodoList';
-import { NotesSection } from '@/components/NotesSection';
-import { Terminal, Code, Cpu, Zap } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { MainTimer } from "@/components/MainTimer";
+import { TodoList, TodoItem } from "@/components/TodoList";
+import { NotesSection } from "@/components/NotesSection";
+import { Terminal, Code, Cpu, Zap } from "lucide-react";
 
 interface AppData {
   mainTimer: number;
@@ -24,11 +24,11 @@ export default function Home() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('/api/data');
+      const response = await fetch("/api/data");
       const result = await response.json();
       setData(result);
     } catch (error) {
-      console.error('Failed to fetch data:', error);
+      console.error("Failed to fetch data:", error);
     } finally {
       setIsLoading(false);
     }
@@ -36,39 +36,50 @@ export default function Home() {
 
   const saveData = async (updatedData: AppData) => {
     try {
-      await fetch('/api/data', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedData)
+      const response = await fetch("/api/data", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedData),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Server error:", errorData);
+        throw new Error(`Server error: ${errorData.error || "Unknown error"}`);
+      }
+
       setData(updatedData);
     } catch (error) {
-      console.error('Failed to save data:', error);
+      console.error("Failed to save data:", error);
     }
   };
 
-  const updateMainTimer = (time: number, isRunning: boolean, startedAt: number) => {
+  const updateMainTimer = (
+    time: number,
+    isRunning: boolean,
+    startedAt: number
+  ) => {
     if (!data) return;
-    
+
     const updatedData = {
       ...data,
       mainTimer: time,
       isMainTimerRunning: isRunning,
-      mainTimerStarted: startedAt
+      mainTimerStarted: startedAt,
     };
     saveData(updatedData);
   };
 
   const updateTodos = (todos: TodoItem[]) => {
     if (!data) return;
-    
+
     const updatedData = { ...data, todos };
     saveData(updatedData);
   };
 
   const updateNotes = (notes: string) => {
     if (!data) return;
-    
+
     const updatedData = { ...data, notes };
     saveData(updatedData);
   };
@@ -81,8 +92,12 @@ export default function Home() {
             <div className="animate-spin h-16 w-16 border-4 border-cyan-400 border-t-transparent rounded-full mx-auto mb-6"></div>
             <Terminal className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-6 w-6 text-cyan-400" />
           </div>
-          <p className="text-slate-400 text-lg font-mono">Initializing workspace...</p>
-          <p className="text-slate-500 text-sm font-mono mt-2">Loading development environment</p>
+          <p className="text-slate-400 text-lg font-mono">
+            Initializing workspace...
+          </p>
+          <p className="text-slate-500 text-sm font-mono mt-2">
+            Loading development environment
+          </p>
         </div>
       </div>
     );
@@ -94,7 +109,9 @@ export default function Home() {
         <div className="text-center text-red-400">
           <Terminal className="h-12 w-12 mx-auto mb-4" />
           <p className="text-lg font-mono">ERROR: Failed to load workspace</p>
-          <p className="text-sm font-mono text-slate-500 mt-2">Please refresh to retry connection</p>
+          <p className="text-sm font-mono text-slate-500 mt-2">
+            Please refresh to retry connection
+          </p>
         </div>
       </div>
     );
@@ -106,29 +123,44 @@ export default function Home() {
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         {/* Animated grid pattern */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `
               linear-gradient(rgba(6, 182, 212, 0.1) 1px, transparent 1px),
               linear-gradient(90deg, rgba(6, 182, 212, 0.1) 1px, transparent 1px)
             `,
-            backgroundSize: '50px 50px'
-          }} />
+              backgroundSize: "50px 50px",
+            }}
+          />
         </div>
-        
+
         {/* Floating orbs */}
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-green-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        
+        <div
+          className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl animate-pulse"
+          style={{ animationDelay: "2s" }}
+        ></div>
+        <div
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-green-500/10 rounded-full blur-3xl animate-pulse"
+          style={{ animationDelay: "1s" }}
+        ></div>
+
         {/* Code-like floating elements */}
         <div className="absolute top-20 left-20 text-cyan-400/20 font-mono text-sm animate-pulse">
           {'{ "status": "active" }'}
         </div>
-        <div className="absolute top-40 right-32 text-purple-400/20 font-mono text-sm animate-pulse" style={{ animationDelay: '1s' }}>
-          {'const timer = new Timer();'}
+        <div
+          className="absolute top-40 right-32 text-purple-400/20 font-mono text-sm animate-pulse"
+          style={{ animationDelay: "1s" }}
+        >
+          {"const timer = new Timer();"}
         </div>
-        <div className="absolute bottom-32 left-32 text-green-400/20 font-mono text-sm animate-pulse" style={{ animationDelay: '2s' }}>
-          {'// TODO: Optimize performance'}
+        <div
+          className="absolute bottom-32 left-32 text-green-400/20 font-mono text-sm animate-pulse"
+          style={{ animationDelay: "2s" }}
+        >
+          {"// TODO: Optimize performance"}
         </div>
       </div>
 
@@ -142,11 +174,11 @@ export default function Home() {
             <div className="h-12 w-px bg-gradient-to-b from-transparent via-slate-600 to-transparent"></div>
             <Cpu className="h-12 w-12 text-green-400" />
           </div>
-          
+
           {/*<h1 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-green-400 mb-4 tracking-tight font-mono">
             DEV_FOCUS_STATION
           </h1>*/}
-          
+
           {/* <div className="max-w-3xl mx-auto">
             <p className="text-xl text-slate-400 leading-relaxed font-mono mb-4">
               {'// Advanced productivity suite for developers'}
@@ -155,20 +187,26 @@ export default function Home() {
               Time tracking • Task management • Cross-device synchronization • Built with Next.js
             </p>
           </div> */}
-          
+
           {/* Status indicators */}
           <div className="flex items-center justify-center gap-6 mt-6">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-sm font-mono text-slate-400">System Online</span>
+              <span className="text-sm font-mono text-slate-400">
+                System Online
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <Zap className="h-4 w-4 text-yellow-400" />
-              <span className="text-sm font-mono text-slate-400">Real-time Sync</span>
+              <span className="text-sm font-mono text-slate-400">
+                Real-time Sync
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-              <span className="text-sm font-mono text-slate-400">Audio Enabled</span>
+              <span className="text-sm font-mono text-slate-400">
+                Audio Enabled
+              </span>
             </div>
           </div>
         </header>
@@ -186,17 +224,11 @@ export default function Home() {
         {/* Todo and Notes Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div>
-            <TodoList
-              todos={data.todos}
-              onUpdate={updateTodos}
-            />
+            <TodoList todos={data.todos} onUpdate={updateTodos} />
           </div>
-          
+
           <div>
-            <NotesSection
-              notes={data.notes}
-              onUpdate={updateNotes}
-            />
+            <NotesSection notes={data.notes} onUpdate={updateNotes} />
           </div>
         </div>
 
@@ -211,7 +243,7 @@ export default function Home() {
             {'// Data synchronized across all devices • Built with Next.js & Tailwind CSS'}
           </p> */}
           <p className="text-xs mt-2 text-slate-600">
-            {'v1.0.0 - Production Ready • Sound notifications enabled'}
+            {"v1.0.0 - Production Ready • Sound notifications enabled"}
           </p>
         </footer>
       </div>

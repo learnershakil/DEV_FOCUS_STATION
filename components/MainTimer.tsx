@@ -93,7 +93,7 @@ export function MainTimer({ initialTime, isRunning, startedAt, onUpdate }: MainT
   };
 
   const resetTimer = () => {
-    const resetTime = 36 * 60 * 60; // 36 hours
+    const resetTime = 24 * 60 * 60; // 24 hours
     setTimeRemaining(resetTime);
     setIsActive(false);
     onUpdate(resetTime, false, Date.now());
@@ -151,8 +151,7 @@ export function MainTimer({ initialTime, isRunning, startedAt, onUpdate }: MainT
           {/* Progress bar with code-like styling */}
           <div className="mt-6">
             <div className="flex justify-between text-xs text-slate-400 font-mono mb-2">
-              <span>{'progress: 0%'}</span>
-              <span>{`${progress.toFixed(1)}%`}</span>
+              <span>{`progress: ${progress.toFixed(1)}%`}</span>
               <span>{'complete: 100%'}</span>
             </div>
             <div className="w-full bg-slate-800/50 rounded-full h-3 overflow-hidden border border-slate-700/50">

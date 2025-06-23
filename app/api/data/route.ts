@@ -1,8 +1,11 @@
-import { NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
+import { NextResponse } from "next/server";
+import { promises as fs } from "fs";
+import path from "path";
 
-const dataPath = path.join(process.cwd(), 'data.json');
+// Force dynamic rendering
+export const dynamic = "force-dynamic";
+
+const dataPath = path.join(process.cwd(), "data.json");
 
 export interface TodoItem {
   id: string;
@@ -25,16 +28,16 @@ export interface AppData {
 
 async function ensureDataFile(): Promise<AppData> {
   try {
-    const data = await fs.readFile(dataPath, 'utf-8');
+    const data = await fs.readFile(dataPath, "utf-8");
     return JSON.parse(data);
   } catch (error) {
     // File doesn't exist, create default data
     const defaultData: AppData = {
-      mainTimer: 36 * 60 * 60, // 36 hours in seconds
+      mainTimer: 24 * 60 * 60, // 24 hours in seconds
       mainTimerStarted: Date.now(),
       isMainTimerRunning: false,
       todos: [],
-      notes: ''
+      notes: "",
     };
     await fs.writeFile(dataPath, JSON.stringify(defaultData, null, 2));
     return defaultData;
@@ -46,16 +49,29 @@ export async function GET() {
     const data = await ensureDataFile();
     return NextResponse.json(data);
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to read data' }, { status: 500 });
+    console.error("GET error:", error);
+    return NextResponse.json({ error: "Failed to read data" }, { status: 500 });
   }
 }
 
 export async function POST(request: Request) {
   try {
     const updatedData = await request.json();
+
+    // Ensure the data directory exists
+    const dir = path.dirname(dataPath);
+    await fs.mkdir(dir, { recursive: true });
+
     await fs.writeFile(dataPath, JSON.stringify(updatedData, null, 2));
     return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to save data' }, { status: 500 });
+    console.error("POST error:", error);
+    return NextResponse.json(
+      {
+        error: "Failed to save data",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 }
+    );
   }
 }
