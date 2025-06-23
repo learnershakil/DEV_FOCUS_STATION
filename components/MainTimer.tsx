@@ -40,6 +40,7 @@ export function MainTimer({ initialTime, isRunning, startedAt, onUpdate }: MainT
         oscillator.stop(audioContext.currentTime + 0.5);
       };
       
+      // @ts-ignore
       audioRef.current.play = createBeepSound;
     }
   }, []);
