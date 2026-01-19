@@ -1,37 +1,34 @@
 {
-  "mainTimer": 86397.059,
-  "mainTimerStarted": 1750707421723,
-  "isMainTimerRunning": false,
-  "todos": [
+  "user": {
+    "name": "Shakil",
+    "title": "Full-Stack Student"
+  },
+  "stats": {
+    "streak": 3,
+    "tasksCompleted": 42
+  },
+  "tasks": [
     {
-      "id": "1750706444492",
-      "text": "jjjjjj",
-      "timeRemaining": 106.90000000000074,
-      "originalTime": 120,
-      "isRunning": false,
-      "isCompleted": true,
-      "createdAt": 1750706444492,
-      "completedIn": 13.099999999999255
-    },
-    {
-      "id": "1750706942671",
-      "text": "1",
-      "timeRemaining": 60,
-      "originalTime": 60,
-      "isRunning": false,
-      "isCompleted": true,
-      "createdAt": 1750706942671,
-      "completedIn": 0
-    },
-    {
-      "id": "1750706948230",
-      "text": "1",
-      "timeRemaining": 32.39999999999961,
-      "originalTime": 60,
-      "isRunning": false,
-      "isCompleted": false,
-      "createdAt": 1750706948230
+      "id": "3",
+      "title": "Tech Club Event Planning",
+      "tag": "Club",
+      "priority": "low",
+      "status": "todo",
+      "createdAt": "2024-02-22T09:00:00Z"
     }
   ],
-  "notes": "kkkk"
+  "notes": [
+    {
+      "id": "1",
+      "title": "Project Ideas",
+      "content": "1. Student OS",
+      "updatedAt": "2026-01-19T04:40:32.573Z"
+    }
+  ],
+  "activeSession": {
+    "startTime": 1768797676412,
+    "duration": 25,
+    "status": "paused",
+    "pausedAt": 1768797704239
+  }
 }

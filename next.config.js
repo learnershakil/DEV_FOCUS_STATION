@@ -1,11 +1,5 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
-  // output: "export",
-  // distDir: "dist",
-  // trailingSlash: true,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  serverExternalPackages: ["better-sqlite3"],
   images: { unoptimized: true },
 };
 
