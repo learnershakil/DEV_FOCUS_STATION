@@ -5,6 +5,7 @@ import './globals.css';
 import { Providers } from './providers';
 import { AppSidebar } from '@/components/app-sidebar';
 import { MobileNav } from '@/components/mobile-nav';
+import { CommandMenu } from '@/components/command-menu';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <div className="flex min-h-screen">
+            <CommandMenu />
             <AppSidebar />
             <main className="flex-1 md:pl-64 pb-24 md:pb-0">
               {children}

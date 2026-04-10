@@ -24,11 +24,5 @@
       "content": "1. Student OS",
       "updatedAt": "2026-01-19T04:40:32.573Z"
     }
-  ],
-  "activeSession": {
-    "startTime": 1768797676412,
-    "duration": 25,
-    "status": "paused",
-    "pausedAt": 1768797704239
-  }
+  ]
 }

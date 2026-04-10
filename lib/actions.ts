@@ -95,7 +95,23 @@ export async function getUser() {
 
 export async function getStats() {
     const db = await readDB();
-    return db.stats;
+    const tasksCompleted = db.stats.tasksCompleted;
+    
+    // Gamification Logic
+    // Level = sqrt(tasks * 2) - Slow curve
+    const level = Math.floor(Math.sqrt(tasksCompleted * 2)) + 1;
+    
+    let rank = "Novice";
+    if (level >= 5) rank = "Apprentice";
+    if (level >= 10) rank = "Adept";
+    if (level >= 20) rank = "Flow Master";
+    if (level >= 50) rank = "Grandmaster";
+
+    return {
+        ...db.stats,
+        level,
+        rank
+    };
 }
 
 // --- TIMER SYNC ---
